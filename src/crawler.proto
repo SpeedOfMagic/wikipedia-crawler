@@ -1,0 +1,14 @@
+syntax="proto3";
+
+message Request {
+  string start_article = 1;
+  string end_article = 2;
+}
+
+message Response {
+  repeated string articles = 1;
+}
+
+service WikipediaCrawler {
+  rpc find_connection(Request) returns (Response) {}
+}
