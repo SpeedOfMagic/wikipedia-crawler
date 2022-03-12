@@ -1,5 +1,6 @@
 grpcio
 grpcio-tools
+pika==1.2.0
 requests
 mwparserfromhell>=0.5.0
 pywikibot
