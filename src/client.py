@@ -7,8 +7,7 @@ from server_config import PORT
 
 
 def main():
-    ip = socket.gethostbyname(socket.gethostname())
-    # FIXME ip = input('Enter IP address of server: ').strip()
+    ip = input('Enter IP address of server: ').strip()
     print(f'Using port {PORT}')
 
     with grpc.insecure_channel(f'{ip}:{PORT}') as channel:
@@ -16,17 +15,18 @@ def main():
         try:
             print('Interrupt to abort.')
             while True:
-                start_article = 'https://en.wikipedia.org/wiki/Bucket'
-                # FIXME input('Enter article to start from: ').strip()
-                end_article = 'https://en.wikipedia.org/wiki/Physical_education'
-                # FIXME input('Enter article to finish on: ').strip()
+                start_article = input('Enter article to start from: ').strip()
+                end_article = input('Enter article to finish on: ').strip()
                 print('Looking for path...')
                 response: Response = stub.find_connection(Request(start_article=start_article, end_article=end_article))
                 path = response.articles
-                print('Path found!')
-                for article in path[:-1]:
-                    print(f'Go to {article}, then')
-                print(f'Go to {path[-1]}, and you are done!')
+                if len(path) == 0:
+                    print('Invalid input or request has timed out.')
+                else:
+                    print('Path found!')
+                    for article in path[:-1]:
+                        print(f'Go to {article}, then')
+                    print(f'Go to {path[-1]}, and you are done!')
         except InterruptedError:
             pass
         except EOFError:
